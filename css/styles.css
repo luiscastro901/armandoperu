@@ -1,0 +1,1237 @@
+/* ====================================================================== */
+/* 1. VARIABLES CSS (Rojo Intenso, Marrón Oscuro) */
+/* ====================================================================== */
+
+:root {
+  --primary-color: #c03028; /* Rojo Intenso - Énfasis y Energía */
+  --secondary-color: #6b3a1e; /* Marrón Oscuro Rojizo - Solidez y Base */
+  --accent-color: #d34b41;
+  --font-color: #333333;
+  --background-color: #f8f8f8; /* Fondo muy claro para contraste */
+  --header-bg: #6b3a1e;
+  --card-bg: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --transition-speed: 0.3s;
+  --header-height: 70px; /* Nueva variable para el alto del header */
+}
+
+body.dark-mode {
+  --primary-color: #f87d7d; /* Rojo más brillante para contraste en oscuro */
+  --secondary-color: #925337; /* Marrón oscuro un poco más claro */
+  --accent-color: #d34b41;
+  --font-color: #f0f0f0;
+  --background-color: #1b1b1b;
+  --header-bg: #382017;
+  --card-bg: #2c2c2c;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* ====================================================================== */
+/* 2. BASE GLOBAL */
+/* ====================================================================== */
+
+html {
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  transition: background-color var(--transition-speed),
+    color var(--transition-speed);
+}
+
+#inicio {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /* Asegura el centrado */
+  padding: 0 20px;
+}
+
+h1,
+h2 {
+  color: var(--primary-color);
+  text-align: center;
+}
+
+/* Animación de entrada de secciones */
+.section {
+  /* Inicial: invisible y ligeramente desplazada */
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  will-change: opacity, transform;
+}
+
+/* Cuando entra en vista, animar a visible */
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color var(--transition-speed), transform 0.2s,
+    box-shadow var(--transition-speed);
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ====================================================================== */
+/* 3. HEADER Y NAVEGACIÓN (Fijo en la parte superior y Compacto) */
+/* ====================================================================== */
+
+header {
+  background-color: var(--header-bg);
+  color: white;
+  position: fixed; /* Header fijo (sticky) */
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+  transition: background-color var(--transition-speed);
+  height: var(--header-height); /* Establece la altura del header */
+  padding: 0 10px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 5px 0; /* Padding vertical reducido para compactar */
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+} /* Logo más pequeño */
+.logo img {
+  width: 100%;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 10px;
+  margin-left: 5px;
+  transition: color var(--transition-speed);
+}
+nav {
+  display: none;
+}
+#menu-toggle {
+  display: block;
+}
+
+/* Menú Móvil */
+#mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 70%;
+  max-width: 300px;
+  height: 100vh;
+  background-color: var(--header-bg);
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.5);
+  padding-top: var(--header-height); /* Ajusta padding según el header fijo */
+  transition: right 0.3s ease-in-out;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+#mobile-menu.open {
+  right: 0;
+}
+#mobile-menu a {
+  color: white;
+  padding: 15px 25px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* ====================================================================== */
+
+/* ====================================================================== */
+/* 4. HERO IMAGE DINÁMICA (Carrusel con Offset) - NUEVA IMPLEMENTACIÓN  */
+/* ====================================================================== */
+
+/* Hago que el hero empiece debajo del header fijo usando margin-top */
+.heroimage {
+  margin-top: var(
+    --header-height
+  ); /* empujar el hero para no quedar debajo del header */
+  height: calc(100vh - var(--header-height));
+  position: relative;
+  display: block;
+  overflow: hidden;
+  color: white;
+}
+
+.hero-slides {
+  position: absolute;
+  inset: 0; /* top:0; left:0; right:0; bottom:0; */
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  z-index: 5;
+}
+
+/* Overlay para mejorar legibilidad del texto */
+.heroimage .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(192, 48, 40, 0.55), rgba(107, 58, 30, 0.65));
+  z-index: 10;
+}
+
+.hero-text {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+  padding: 24px 30px;
+  text-align: center;
+  color: #fff;
+  border-radius: 10px;
+  backdrop-filter: blur(3px);
+}
+
+.hero-text h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.hero-text p {
+  margin: 0 0 16px 0;
+}
+
+/* Optional: small slider dots */
+.hero-dots {
+  position: absolute;
+  z-index: 30;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.hero-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.hero-dots button.active {
+  background: #fff;
+  transform: scale(1.2);
+}
+
+/* ====================================================================== */
+/* 5. MAIN CONTENT - SECCIONES (sin cambios significativos) */
+/* ====================================================================== */
+
+main {
+  flex-grow: 1;
+  padding: 20px 0;
+}
+
+/* --- SOBRE NOSOTROS: Implementación de Flexbox con Imagen --- */
+/* ============================= */
+/* SOBRE NOSOTROS - Estilo mejorado */
+/* ============================= */
+#aboutus {
+  background: linear-gradient(135deg, #fdf4e3, #fff);
+  padding: 80px 20px;
+}
+
+#aboutus h2 {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+}
+
+#aboutus h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.about-us-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.about-us-flex .about-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.about-us-flex .about-image {
+  flex: 1;
+  max-width: 400px;
+}
+
+.about-us-flex .btn {
+  margin-top: 15px;
+}
+
+/* ============================= */
+/* BOTONES FLOTANTES (reubicados) */
+/* ============================= */
+.float-controls {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  right: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none; /* evita bloquear clics en otros elementos */
+}
+
+.float-btn {
+  pointer-events: auto; /* reactivamos clic solo en los botones */
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+#dark-mode-toggle {
+  background-color: var(--secondary-color);
+}
+
+.whatsapp-float {
+  background-color: #25d366;
+  animation: pulse 2s infinite;
+}
+
+/* ====================================================================== */
+/* 7. FOOTER (Contacto) */
+/* ====================================================================== */
+
+footer {
+  background-color: var(--header-bg);
+  color: white;
+  padding: 40px 0 0;
+  margin-top: 40px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition-speed);
+}
+
+.footer-grid-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 30px;
+}
+.footer-col {
+  text-align: center;
+  padding: 0 10px;
+}
+.footer-col h3 {
+  color: var(--primary-color);
+  font-size: 1.3em;
+  margin-bottom: 15px;
+}
+.footer-col a {
+  color: white;
+}
+.footer-col i {
+  margin-right: 10px;
+  color: var(--primary-color);
+}
+.copyright-bar {
+  background-color: var(--secondary-color);
+  padding: 15px 20px;
+  text-align: center;
+}
+
+/* ====================================================================== */
+/* 8. RESPONSIVE Y DESKTOP STYLES */
+/* ====================================================================== */
+
+@media (min-width: 768px) {
+  /* Navegación de escritorio */
+  #menu-toggle {
+    display: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin-left: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+  }
+  nav a:hover {
+    background-color: var(--primary-color);
+  }
+
+  /* Grillas */
+  .mission-vision-grid {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .about-us-flex {
+    flex-direction: row; /* Desktop: side-by-side */
+    text-align: left;
+  }
+  .about-us-flex .about-text {
+    flex: 2;
+    order: initial; /* Volver al orden normal */
+  }
+  .about-us-flex .about-image {
+    flex: 1;
+    max-width: 350px;
+    order: initial;
+  }
+
+  /* Footer */
+  #mobile-menu {
+    display: none !important;
+  }
+  .footer-grid-layout {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    align-items: flex-start;
+  }
+  .footer-col {
+    text-align: left;
+    flex: 1;
+    max-width: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .about-us-flex {
+    flex-direction: column;
+    gap: 25px;
+  }
+}
+
+/* ========================================== */
+/* 📱 Ajustes para pantallas pequeñas (<=480px) */
+/* ========================================== */
+@media (max-width: 480px) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  header .logo img {
+    width: 45px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-text p {
+    font-size: 0.9rem;
+  }
+
+  .about-us-flex {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .about-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .service-card img {
+    height: 180px;
+  }
+
+  .mission-vision-grid {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  footer {
+    text-align: center;
+  }
+}
+
+/* ====================================================================== */
+/* 9. ESTILOS ADICIONALES PARA LAS CARDS DE SERVICIOS CON IMÁGENES */
+/* ====================================================================== */
+/* SECCIÓN SERVICIOS (Cards adaptables con modo oscuro) */
+/* ====================================================================== */
+
+.services-section {
+  background-color: var(--background-color);
+  transition: background-color var(--transition-speed);
+  padding: 80px 20px;
+}
+
+.services-section h2 {
+  color: var(--secondary-color);
+  font-size: 2.3rem;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.services-section h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.service-card {
+  background-color: var(--card-bg);
+  color: var(--font-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s,
+    background-color var(--transition-speed);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.service-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-content h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.card-content p {
+  color: var(--font-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 🌙 Modo oscuro específico para los servicios */
+body.dark-mode .services-section {
+  background-color: #1a1a1a;
+}
+
+body.dark-mode .service-card {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+body.dark-mode .services-section .card-content {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .card-content h3 {
+  color: #ff8a80;
+}
+
+body.dark-mode .card-content p {
+  color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  #services .card-content {
+    text-align: center;
+  }
+}
+
+/* ====================================================================== */
+/* 9. ESTILO DE CARDS (Servicios y Misión/Visión/Valores) */
+/* ====================================================================== */
+
+/* ---------- CARDS DE SERVICIOS ---------- */
+/* .services-section {
+  background-color: var(--background-color);
+  transition: background-color var(--transition-speed);
+} */
+
+.service-card {
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s,
+    background-color var(--transition-speed);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.service-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.service-card .card-content {
+  padding: 20px;
+}
+
+.service-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  color: var(--font-color);
+  line-height: 1.5;
+}
+
+/* ---------- MISION, VISION Y VALORES ---------- */
+#mission-vision {
+  background: linear-gradient(135deg, #fff7f5, #fdf4e3);
+  padding: 80px 20px;
+  transition: background var(--transition-speed);
+}
+
+.mission-vision-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.vision-item {
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: background-color var(--transition-speed), transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.vision-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.vision-item h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.vision-item p {
+  color: var(--font-color);
+  line-height: 1.6;
+}
+
+/* ====================================================================== */
+/* 10. MODO OSCURO: Fondos y tarjetas */
+/* ====================================================================== */
+body.dark-mode {
+  background-color: #1b1b1b;
+}
+
+body.dark-mode #aboutus {
+  background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+}
+
+body.dark-mode #mission-vision {
+  background: linear-gradient(135deg, #1f1f1f, #2b2b2b);
+}
+
+body.dark-mode .service-card,
+body.dark-mode .vision-item {
+  background-color: #2c2c2c;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .service-card h3,
+body.dark-mode .vision-item h3 {
+  color: var(--primary-color);
+}
+
+body.dark-mode .service-card p,
+body.dark-mode .vision-item p {
+  color: #e2e2e2;
+}
+
+body.dark-mode footer {
+  background-color: #2b1c16;
+}
+
+body.dark-mode .copyright-bar {
+  background-color: #1f1f1f;
+}
+
+body.dark-mode .services-section {
+  background: linear-gradient(135deg, #1f1f1f, #2b2b2b);
+}
+
+body.dark-mode .service-card {
+  background-color: #2c2c2c;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .service-card h3 {
+  color: var(--primary-color);
+}
+
+body.dark-mode .service-card p {
+  color: #e2e2e2;
+}
+
+/* ================================================== */
+/* 🎨 Fondo con imagen sutil en la sección de servicios */
+/* ================================================== */
+.services-section {
+  padding: 70px 0;
+  background-color: var(--background-color);
+  background-image: url("assets/img/img-06.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+  transition: background-color var(--transition-speed),
+    filter var(--transition-speed);
+}
+
+.services-section {
+  background: url("assets/img/img-06.jpg") center/cover no-repeat;
+  position: relative;
+  z-index: 1;
+}
+
+.services-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85); /* capa clara por defecto */
+  z-index: 0;
+  transition: background 0.3s ease;
+}
+
+body.dark-mode .services-section::before {
+  background: rgba(0, 0, 0, 0.6); /* capa oscura en dark mode */
+}
+
+.services-section .container {
+  position: relative;
+  z-index: 2; /* eleva el contenido sobre el overlay */
+}
+
+.service-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .service-card {
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.service-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.service-card .card-content {
+  padding: 20px;
+}
+
+.service-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.services-section {
+  padding: 70px 0;
+  background-color: var(--card-bg);
+  transition: background-color var(--transition-speed);
+}
+
+body.dark-mode .services-section {
+  background-color: var(--card-bg);
+}
+
+body.dark-mode .service-card {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .card-content {
+  color: #f0f0f0;
+  background-color: #1a1a1a;
+}
+
+/* ...existing code... */
+.section {
+  opacity: 0;
+  transform: translateY(20px);
+  visibility: hidden;
+  transition: opacity 600ms cubic-bezier(0.16, 0.8, 0.25, 1),
+    transform 600ms cubic-bezier(0.16, 0.8, 0.25, 1),
+    visibility 0ms linear 600ms;
+  will-change: opacity, transform;
+}
+
+/* Cuando entra en vista */
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0ms; /* aparece de inmediato con la transición */
+}
+
+/* Opcional: si quieres un ligero stagger para elementos directos dentro de la sección,
+   añade clases .stagger-item a los elementos que quieras escalonar. */
+.section .stagger-item {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 480ms ease, transform 480ms ease;
+}
+.section.visible .stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ...existing code... */
+
+/* ...existing code... */
+/* Asegurar fade-in para la sección "mission-vision" y stagger en sus items */
+
+#mission-vision .vision-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 520ms ease;
+  will-change: opacity, transform;
+}
+
+/* Cuando la sección se vuelve visible */
+#mission-vision.visible .vision-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger fijo por posición */
+#mission-vision .vision-item:nth-child(1) {
+  transition-delay: 60ms;
+}
+#mission-vision .vision-item:nth-child(2) {
+  transition-delay: 160ms;
+}
+#mission-vision .vision-item:nth-child(3) {
+  transition-delay: 260ms;
+}
+/* ...existing code... */
+
+/* ...existing code... */
+/* ...existing code... */
+/* Reemplazar reglas previas de .section y servicios por estas (quita visibility-delay) */
+
+.section {
+  opacity: 0;
+  transform: translateY(18px);
+  /* quitamos visibility con delay para que no haya "zona vacía" */
+  transition: opacity 520ms cubic-bezier(0.16, 0.8, 0.25, 1),
+    transform 520ms cubic-bezier(0.16, 0.8, 0.25, 1);
+  will-change: opacity, transform;
+}
+
+/* Al entrar en vista: mostrar inmediatamente con transición */
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards de servicios: fade + scale + stagger corto */
+.services-grid .service-card {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transform-origin: center top;
+  transition: opacity 420ms cubic-bezier(0.16, 0.8, 0.25, 1),
+    transform 420ms cubic-bezier(0.16, 0.8, 0.25, 1), box-shadow 220ms ease;
+  will-change: opacity, transform;
+}
+
+/* Cuando la sección recibe .visible las cards suben y escalan a 1 */
+.services-section.visible .services-grid .service-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger corto: uno a uno, delays reducidos */
+.services-section.visible .services-grid .service-card:nth-child(1) {
+  transition-delay: 0ms;
+}
+.services-section.visible .services-grid .service-card:nth-child(2) {
+  transition-delay: 70ms;
+}
+.services-section.visible .services-grid .service-card:nth-child(3) {
+  transition-delay: 140ms;
+}
+.services-section.visible .services-grid .service-card:nth-child(4) {
+  transition-delay: 210ms;
+}
+.services-section.visible .services-grid .service-card:nth-child(5) {
+  transition-delay: 280ms;
+}
+.services-section.visible .services-grid .service-card:nth-child(6) {
+  transition-delay: 350ms;
+}
+
+/* Si usas más cards, añade nth-child adicionales con incrementos similares */
+
+/* ...existing code... */
+/* -------------------- SECCIÓN: CONSULTA GRATIS + CHATBOT -------------------- */
+#free-consultation {
+  padding: 70px 18px;
+  background: linear-gradient(135deg, #fdf4e3 0%, #fff9f0 100%);
+}
+
+.consultation-wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.consultation-info {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.consultation-info h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 12px;
+  color: var(--secondary-color);
+}
+
+.consultation-info p {
+  font-size: 1.05rem;
+  margin-bottom: 24px;
+  color: var(--muted);
+}
+
+.consultation-cta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+.btn-secondary {
+  background: #25d366;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+.btn-secondary:hover {
+  background: #1da851;
+}
+
+.consultation-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+}
+
+.detail-item i {
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.detail-item h4 {
+  margin-bottom: 4px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.detail-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.detail-item a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.detail-item a:hover {
+  text-decoration: underline;
+}
+
+/* Columna derecha: Avatar + Chatbot */
+.consultation-chatbot {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.avatar-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 4px solid var(--primary);
+  box-shadow: 0 12px 30px rgba(192, 48, 40, 0.15);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.avatar-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #25d366;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.chatbot-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  border-top: 4px solid var(--primary);
+}
+
+.chatbot-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.chatbot-card > p {
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.chatbot-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.chat-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(192, 48, 40, 0.08);
+  border: 1px solid rgba(192, 48, 40, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  transition: all 0.2s ease;
+}
+
+.chat-option:hover {
+  background: rgba(192, 48, 40, 0.15);
+  border-color: var(--primary);
+  transform: translateX(4px);
+}
+
+.chat-option i {
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+
+.chatbot-footer {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .consultation-wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .consultation-cta {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 140px;
+    height: 140px;
+  }
+
+  .chatbot-card {
+    max-width: 100%;
+  }
+}
+/* ...existing code... */
